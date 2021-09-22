@@ -1,0 +1,166 @@
+meta:
+  id: mpc_2000_pgm
+  license: CC0-1.0
+  endian: le
+
+seq:
+  - type: header
+  - id: nb_samples
+    type: u1
+  - id: sample_list
+    type: sample_entry
+    repeat: expr
+    repeat-expr: nb_samples
+
+  - type: padding
+  - type: magic1
+  - type: padding
+  - id: pgm_name
+    type: str
+    encoding: ASCII
+    size: 16
+
+  - type: padding
+  - id: slider_params
+    type: slider_params
+  - id: midi_channel
+    type: u1
+
+  - type: magic2
+  - type: padding
+
+  - id: pad_list
+    type: pad_entry
+    repeat: expr
+    repeat-expr: 16 * 4
+  - id: pad_mix_list
+    type: pad_mix_entry
+    repeat: expr
+    repeat-expr: 16 * 4
+
+  - type: magic3
+
+  - id: pad_assign_list
+    type: s1
+    repeat: expr
+    repeat-expr: 16 * 4
+
+  - type: footer
+
+
+types:
+  padding:
+    seq:
+      - id: padding
+        contents: [0]
+  header:
+    seq:
+      - id: header
+        contents: [0x07, 0x04]
+  footer:
+    seq:
+      - id: footer
+        contents: [0x02, 0x00, 0x48, 0x00, 0xD0, 0x07, 0x00, 0x00, 0x63, 0x01, 0x14, 0x08, 0x1D, 0xFC, 0x32, 0x33, 0x02, 0x32, 0x3C, 0x08, 0x05, 0x0A, 0x14, 0x14, 0x32, 0x00, 0x00, 0x02, 0x0F, 0x19, 0x00, 0x05, 0x41, 0x14, 0x1E, 0x01, 0x05, 0x00, 0x00, 0x05, 0x63, 0x00, 0xF4, 0xFF, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x4F, 0x01, 0x4F, 0x01, 0x00, 0x42, 0x4F, 0x01, 0x00, 0x42, 0x4F, 0x01, 0x00, 0x42, 0x32, 0x00, 0x63, 0x28, 0x00, 0x3C, 0x00, 0x00, 0xD0, 0x07, 0x00, 0x00, 0x63, 0x01, 0x14, 0x08, 0x1D, 0xFC, 0x32, 0x33, 0x02, 0x32, 0x3C, 0x08, 0x05, 0x0A, 0x14, 0x14, 0x32, 0x00, 0x00, 0x02, 0x0F, 0x19, 0x00, 0x05, 0x41, 0x14, 0x1E, 0x01, 0x05, 0x00, 0x00, 0x05, 0x63, 0x00, 0xF4, 0xFF, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x4F, 0x01, 0x4F, 0x01, 0x00, 0x42, 0x4F, 0x01, 0x00, 0x42, 0x4F, 0x01, 0x00, 0x42, 0x32, 0x00, 0x63, 0x28, 0x00, 0x3C, 0x00, 0x00, 0x04, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x32, 0x00, 0x23, 0x00, 0x3E, 0x33, 0x5A, 0x32, 0x14, 0x00, 0x00, 0x00, 0x32, 0x00, 0x23, 0x00, 0x3E, 0x33, 0x5A, 0x32, 0x14, 0x00, 0x00, 0x00, 0x32, 0x00, 0x23, 0x00, 0x3E, 0x33, 0x5A, 0x32, 0x14, 0x00, 0x00, 0x00, 0x32, 0x00, 0x23, 0x00, 0x3E, 0x33, 0x5A, 0x32, 0x14, 0x00]
+  magic1:
+    seq:
+      - id: magic
+        contents: [0x1e]
+  magic2:
+    seq:
+      - id: magic
+        contents: [0x23, 0x40, 0x00, 0x19]
+  magic3:
+    seq:
+      - id: magic
+        contents: [0x00, 0x00, 0x40, 0x00]
+  slider_params:
+    seq:
+      - id: slider_note
+        type: u1
+      - id: slider_tuning_low
+        type: u1
+      - id: slider_tuning_high
+        type: u1
+      - id: slider_decay_low
+        type: u1
+      - id: slider_decay_high
+        type: u1
+      - id: slider_attack_low
+        type: u1
+      - id: slider_attack_high
+        type: u1
+      - id: slider_filter_low
+        type: u1
+      - id: slider_filter_high
+        type: u1
+  sample_entry:
+    seq:
+      - type: padding
+      - id: sample_name
+        type: str
+        encoding: ASCII
+        size: 16
+  pad_entry:
+    seq:
+      - id: sample_nb
+        type: u1
+      - id: mode
+        type: u1
+      - id: vel_sw_1
+        type: u1
+      - id: vel_note_1
+        type: u1
+      - id: vel_sw_2
+        type: u1
+      - id: vel_note_2
+        type: u1
+      - id: voice_overlap
+        type: u1
+      - id: pad_poly_note_1
+        type: u1
+      - id: pad_poly_note_2
+        type: u1
+      - id: tune
+        type: u2 # short
+      - id: attack
+        type: u1
+      - id: decay
+        type: u1
+      - id: decay_mode
+        type: u1
+      - id: filter_freq
+        type: u1
+      - id: filter_res
+        type: u1
+      - id: filter_attack
+        type: u1
+      - id: filter_decay
+        type: u1
+      - id: filter_amount
+        type: u1
+      - id: velo_attack_level
+        type: u1
+      - id: velo_attack_attack
+        type: u1
+      - id: velo_attack_start
+        type: u1
+      - id: velo_filter_freq
+        type: u1
+      - id: slider_data
+        type: u1
+      - id: velo_tune_pitch
+        type: u1
+  pad_mix_entry:
+    seq:
+      - id: fx_level
+        type: u1
+      - id: fx_send
+        type: u1
+      - id: stereo_level
+        type: u1
+      - id: pan
+        type: u1
+      - id: solo_level
+        type: u1
+      - id: solo_output
+        type: u1
